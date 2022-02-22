@@ -110,8 +110,8 @@ public class HashTable {
             temp = getHashEntry(key, temp);
 
             if (temp != null) {
-                // Eliminar cuando no tiene colisiones
                 if (temp.prev == null) {
+                    // Eliminar cuando no tiene colisiones
                     if (temp.next == null) {
                         entries[hash] = null;
                     }
