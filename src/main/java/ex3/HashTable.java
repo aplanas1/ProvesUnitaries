@@ -1,4 +1,4 @@
-package ex2;
+package ex3;
 
 // Original source code: https://gist.github.com/amadamala/3cdd53cb5a6b1c1df540981ab0245479
 // Modified by Fernando Porrino Serrano for academic purposes.
@@ -31,27 +31,26 @@ public class HashTable {
         int hash = getHash(key);
         final HashEntry hashEntry = new HashEntry(key, value);
 
-        if(entries[hash] == null) {
+        if(entries[hash] == null) { // Insertamos el elemento de la petición en la primera posición
             entries[hash] = hashEntry;
             ITEMS++; // sumamos un item
-        } else {
+        }
+        else {
             HashEntry temp = entries[hash];
 
-            if (temp.key.equals(key)){ // Insertamos el elemento de la petición en la primera posición
-                entries[hash].value = hashEntry.value;
-            }else{
+            temp = getHashEntry(key,temp);
+            if(temp==null){
+                temp=entries[hash];
 
                 while(temp.next != null) temp = temp.next;
 
                 // Insertamos el elemento de la petición en la posición siguiente al último
-                if (temp.key.equals(key)){
-                    temp.value = hashEntry.value;
-                }else {
-                    ITEMS++; // sumamos los items
+                temp.next = hashEntry;
+                hashEntry.prev = temp;
+                ITEMS++;
 
-                    temp.next = hashEntry;
-                    hashEntry.prev = temp;
-                }
+            }else{
+                temp.value= value;
             }
         }
 
@@ -80,16 +79,11 @@ public class HashTable {
         if(entries[hash] != null) {
             HashEntry temp = entries[hash];
 
-            // Busca el elemento indicado
-            while(!temp.key.equals(key)) {
-                if (temp.next != null) temp = temp.next;
-                else return null; // Devuelve null en caso de no encontrar nada
-            }
-
-            return temp.value; // Devuelve el valor del elemento solicitado
+            temp = getHashEntry(key, temp);
+            if (temp!=null) return temp.value; // Devuelve el valor del elemento solicitado
         }
 
-        return null; // Devuelve null en caso de que entries[hash] sea null
+        return null; // Devuelve null en caso de no encontrar nada
 
         //ORIGINAL
         /*if(entries[hash] != null) {
@@ -113,13 +107,7 @@ public class HashTable {
 
             HashEntry temp = entries[hash];
             // Busca el elemento que hayas indicado
-            while (!temp.key.equals(key)) {
-                if (temp.next != null) temp = temp.next;
-                else {
-                    temp = null;
-                    break;
-                }
-            }
+            temp = getHashEntry(key, temp);
 
             if (temp != null) {
                 // Eliminar cuando no tiene colisiones
@@ -162,31 +150,18 @@ public class HashTable {
         }*/
     }
 
+    private HashEntry getHashEntry(String key, HashEntry temp) {
+        while (!temp.key.equals(key)) {
+            if (temp.next != null) temp = temp.next;
+            else return null;
+        }
+        return temp;
+    }
+
     private int getHash(String key) {
         // piggy backing on java string
         // hashcode implementation.
         return key.hashCode() % SIZE;
-    }
-
-    private class HashEntry {
-        String key;
-        String value;
-
-        // Linked list of same hash entries.
-        HashEntry next;
-        HashEntry prev;
-
-        public HashEntry(String key, String value) {
-            this.key = key;
-            this.value = value;
-            this.next = null;
-            this.prev = null;
-        }
-
-        @Override
-        public String toString() {
-            return "[" + key + ", " + value + "]";
-        }
     }
 
     @Override

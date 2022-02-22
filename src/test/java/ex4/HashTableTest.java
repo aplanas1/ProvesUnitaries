@@ -1,4 +1,4 @@
-package ex2;
+package ex4;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,6 +8,22 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class HashTableTest {
 
+    @org.junit.jupiter.api.Test
+    void putAnotherData() {
+        HashTable hashTable = new HashTable();
+
+        hashTable.put("0","hola");
+        hashTable.put("1",1);
+        hashTable.put("12",1.1f);
+        hashTable.put("2",true);
+        hashTable.put("13",false);
+        Assertions.assertEquals(hashTable.toString(),  "\n" +
+                " bucket[0] = [0, hola]\n" +
+                " bucket[1] = [1, 1] -> [12, 1.1]\n" +
+                " bucket[2] = [2, true] -> [13, false]");
+        Assertions.assertEquals( 5,hashTable.count());
+        Assertions.assertEquals( 16,hashTable.size());
+    }
     @org.junit.jupiter.api.Test
     void put() {
         HashTable hashTable = new HashTable();
