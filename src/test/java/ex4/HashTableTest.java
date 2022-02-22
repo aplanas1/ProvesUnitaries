@@ -6,7 +6,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class HashTableTest {
+
+    List<Cosa> cosas;
+
+    public HashTableTest() {
+        cosas = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            cosas.add(new Cosa());
+        }
+    }
 
     @org.junit.jupiter.api.Test
     void putAnotherData() {
@@ -17,13 +29,17 @@ class HashTableTest {
         hashTable.put("12",1.1f);
         hashTable.put("2",true);
         hashTable.put("13",false);
+        hashTable.put("3",cosas.get(0));
+        hashTable.put("14",cosas);
         Assertions.assertEquals(hashTable.toString(),  "\n" +
                 " bucket[0] = [0, hola]\n" +
                 " bucket[1] = [1, 1] -> [12, 1.1]\n" +
-                " bucket[2] = [2, true] -> [13, false]");
-        Assertions.assertEquals( 5,hashTable.count());
+                " bucket[2] = [2, true] -> [13, false]\n" +
+                " bucket[3] = [3, Cosa{}] -> [14, [Cosa{}, Cosa{}, Cosa{}]]");
+        Assertions.assertEquals( 7,hashTable.count());
         Assertions.assertEquals( 16,hashTable.size());
     }
+
     @org.junit.jupiter.api.Test
     void put() {
         HashTable hashTable = new HashTable();

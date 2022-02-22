@@ -27,6 +27,5 @@ public class Enunciat {
         3.3. Explica en què consisteix el concepte de Continuous Integration (CI) i quina relació té amb el que
              acabes de fer en aquest exercici.
 
-                dfjhifdhiidfjh
 */
 }
